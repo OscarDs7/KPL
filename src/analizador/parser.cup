@@ -1,0 +1,77 @@
+package analizador;
+
+symbol factory java_cup.runtime.ComplexSymbolFactory;
+
+parser code {:
+    import java_cup.runtime.ComplexSymbolFactory;
+    import java_cup.runtime.Symbol;
+:};
+
+terminal MOVER, DECIR, REPETIR, LLAVE_ABRE, LLAVE_CIERRA;
+terminal Integer NUM;
+terminal String CADENA;
+
+non terminal Object programa, sentencias, sentencia, bloque;
+
+start with programa;
+
+programa ::= sentencias
+           {: RESULT = $1; :}
+           ;
+
+sentencias ::= sentencia sentencias
+             {: 
+                Runnable s1 = (Runnable) $1;
+                Runnable s2 = (Runnable) $2;
+                RESULT = new Runnable() {
+                   public void run() {
+                      s1.run();
+                      s2.run();
+                   }
+                };
+             :}
+           | /* vacío */ 
+             {: 
+                RESULT = new Runnable() {
+                   public void run() { }
+                };
+             :}
+           ;
+
+sentencia ::= MOVER NUM 
+               {: 
+                  int pasos = ((Integer)$2.value);
+                  RESULT = new Runnable() { 
+                     public void run() {
+                         System.out.println("Mover " + pasos + " pasos");
+                     }
+                  };
+               :}
+           | DECIR CADENA 
+               {: 
+                  String texto = (String)$2.value;
+                  RESULT = new Runnable() { 
+                     public void run() {
+                         System.out.println("Decir: " + texto);
+                     }
+                  };
+               :}
+           | REPETIR NUM bloque 
+               {: 
+                  int rep = ((Integer)$2.value);
+                  Runnable bloque = (Runnable)$3;
+                  RESULT = new Runnable() {
+                     public void run() {
+                        for (int i = 0; i < rep; i++) {
+                           bloque.run();
+                        }
+                     }
+                  };
+               :}
+           ;
+
+bloque ::= LLAVE_ABRE sentencias LLAVE_CIERRA
+         {: 
+            RESULT = $2;
+         :}
+         ;
