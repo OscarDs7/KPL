@@ -7,7 +7,7 @@ Este proyecto es un compilador/interprete básico de un lenguaje tipo **Kids Pro
 
 El proyecto está construido con:
 
-- ☕ Java (GUI)
+- ☕ Java 
 - Jflex (analizador léxico)
 - JavaCup (analizador sintáctico)
 - NetBeans IDE
