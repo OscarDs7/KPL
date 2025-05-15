@@ -12,14 +12,14 @@ public class sym {
   public static final int NUM = 7;
   public static final int EOF = 0;
   public static final int DECIR = 3;
-  public static final int error = 1;
+  public static final int ERROR = 1;
   public static final int MOVER = 2;
   public static final int REPETIR = 4;
   public static final int LLAVE_ABRE = 5;
   public static final int LLAVE_CIERRA = 6;
   public static final String[] terminalNames = new String[] {
   "EOF",
-  "error",
+  "ERROR",
   "MOVER",
   "DECIR",
   "REPETIR",
