@@ -1,2 +1,0 @@
-KPL
-KPL$TextAreaOutputStream

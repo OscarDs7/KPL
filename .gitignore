@@ -5,33 +5,19 @@
 *.ear
 *.log
 
-# === Carpetas de construcción ===
+# Archivos de compilación y clases
+*.class
+*.jar
+*.log
 build/
 dist/
 out/
-bin/
 
-# === NetBeans ===
+# NetBeans: archivos generados automáticamente
 nbproject/private/
-nbbuild/
-nbdist/
-.nb-gradle/
+nbproject/build-impl.xml
+nbproject/genfiles.properties
 
-# === IDEs ===
-*.iml
-.idea/
-*.ipr
-*.iws
-.vscode/
+# Sistema
+*.rs
 
-# === Archivos del sistema ===
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# === Archivos temporales ===
-*.tmp
-*.bak
-*.swp
-*.swo
-*~
