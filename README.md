@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # kidsprolanguage
 Programa hecho con la finalidad de enseñar a los jóvenes fundamentos básicos de la programación.
 
@@ -62,4 +61,4 @@ El objetivo principal es **poner en práctica el análisis léxico y sintáctico
 ## Licencia
 
 Uso académico únicamente. No distribuir sin autorización del autor.
->>>>>>> mi-rama
+
