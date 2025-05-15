@@ -1,6 +1,6 @@
 # 💻 KPL - Lenguaje de programación para niños
 
-Este proyecto es un compilador/interprete básico de un lenguaje tipo **Kleene Programming Language (KPL)** desarrollado como parte de la materia **Teoría de Autómatas** en el 6to semestre de ingeniería.
+Este proyecto es un compilador/interprete básico de un lenguaje tipo **Kids Programming Language (KPL)** desarrollado como parte de la materia **Teoría de Autómatas** en el 6to semestre de ingeniería.
 
 El proyecto está construido con:
 
