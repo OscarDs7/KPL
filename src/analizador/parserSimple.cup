@@ -1,0 +1,82 @@
+package analizador;
+
+parser code {:
+  // Código opcional
+:};
+
+terminal MOVER, DECIR, REPETIR, LLAVE_ABRE, LLAVE_CIERRA;
+terminal Integer NUM;
+terminal String CADENA;
+
+non terminal Object programa, sentencias, sentencia, bloque;
+
+start with programa;
+
+programa ::= sentencias:s
+           {: 
+              RESULT = new Runnable() {
+                 public void run() {
+                    for (Object sentencia : (java.util.List<Object>) s) {
+                       ((Runnable) sentencia).run();
+                    }
+                 }
+              };
+           :}
+           ;
+
+sentencias ::= sentencia:s sentencias:ss
+             {: 
+                java.util.List<Object> lista = new java.util.ArrayList<>();
+                lista.add(s);
+                lista.addAll((java.util.List<Object>) ss);
+                RESULT = lista;
+             :}
+           | /* vacío */
+             {: 
+                RESULT = new java.util.ArrayList<Object>();
+             :}
+           ;
+
+sentencia ::= MOVER NUM:n
+               {: 
+                  int pasos = n;
+                  RESULT = new Runnable() { 
+                     public void run() {
+                         System.out.println("Mover " + pasos + " pasos");
+                     }
+                  };
+               :}
+           | DECIR CADENA:c
+               {: 
+                  String texto = c;
+                  RESULT = new Runnable() { 
+                     public void run() {
+                         System.out.println("Decir: " + texto);
+                     }
+                  };
+               :}
+           | REPETIR NUM:n bloque:b
+               {: 
+                  int rep = n;
+                  Runnable bloqueRun = (Runnable) b;
+                  RESULT = new Runnable() {
+                     public void run() {
+                        for (int i = 0; i < rep; i++) {
+                           bloqueRun.run();
+                        }
+                     }
+                  };
+               :}
+           ;
+
+bloque ::= LLAVE_ABRE sentencias:s LLAVE_CIERRA
+         {: 
+            RESULT = new Runnable() {
+               public void run() {
+                  for (Object sentencia : (java.util.List<Object>) s) {
+                     ((Runnable) sentencia).run();
+                  }
+               }
+            };
+         :}
+         ;
