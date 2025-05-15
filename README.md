@@ -50,7 +50,7 @@ El objetivo principal es **poner en práctica el análisis léxico y sintáctico
 
 ## Autor
 
-- Ing.Oscar Romero 
+- Ingeniero Oscar Romero 
 - Proyecto académico para CETI (Centro de Enseñanza Técnica Industrial)
 
 ---
