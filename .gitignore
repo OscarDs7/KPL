@@ -1,23 +1,25 @@
-# === Compilación Java ===
+# === Archivos compilados y binarios ===
 *.class
 *.jar
 *.war
 *.ear
 *.log
 
-# Archivos de compilación y clases
-*.class
-*.jar
-*.log
+# === Carpetas de compilación y distribución ===
 build/
 dist/
 out/
 
-# NetBeans: archivos generados automáticamente
+# === NetBeans: archivos generados automáticamente y configuración privada ===
 nbproject/private/
 nbproject/build-impl.xml
 nbproject/genfiles.properties
 
-# Sistema
-*.rs
+# === Archivos temporales y de sistema ===
+*.tmp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
 
