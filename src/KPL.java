@@ -1,34 +1,48 @@
 import analizador.parser;
-//import analizador.Lexer;
+import analizador.LexerSimple;
 import java.awt.*;
 import java.io.*;
-import java_cup.Lexer;
-import java_cup.runtime.Symbol;
 import javax.swing.*;
+import java.io.StringReader;
+import java_cup.runtime.Symbol;
 
 public class KPL extends JFrame {
 
     private JTextArea area, salidaArea;
 
     public KPL() {
-        setTitle("Lenguaje Visual Tipo Scratch");
+        setTitle("Kids Programming Language");
         setSize(600, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
+        setLocationRelativeTo(null); //centrar ventana
+        
         // Área de entrada
         area = new JTextArea();
-        area.setFont(new Font("Consolas", Font.PLAIN, 14));
-        area.setBackground(new Color(245, 245, 245));
+        area.setFont(new Font("Comic Sans MS", Font.PLAIN, 16)); // Fuente amigable
+        area.setBackground(new Color(255, 255, 204)); // Amarillo pastel
+        area.setForeground(Color.DARK_GRAY);
+        area.setEditable(false);
+        area.setBorder(BorderFactory.createTitledBorder("Entrada del programa ✏️"));
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
 
         // Área de salida
         salidaArea = new JTextArea();
-        salidaArea.setFont(new Font("Consolas", Font.PLAIN, 14));
-        salidaArea.setBackground(new Color(230, 255, 230));
+        salidaArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        salidaArea.setBackground(new Color(204, 255, 229)); // Verde pastel
+        salidaArea.setForeground(new Color(0, 102, 51));
         salidaArea.setEditable(false);
-
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(area), new JScrollPane(salidaArea));
-        splitPane.setResizeWeight(0.6);
+        salidaArea.setBorder(BorderFactory.createTitledBorder("Salida del programa 🚀"));
+        salidaArea.setLineWrap(true);
+        salidaArea.setWrapStyleWord(true);
+        
+        //Mejor apariencia de la ventana
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+        new JScrollPane(area), new JScrollPane(salidaArea));
+        splitPane.setResizeWeight(0.5);
+        splitPane.setDividerSize(8);
+        splitPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(splitPane, BorderLayout.CENTER);
 
         // Redirigir salida
@@ -54,8 +68,34 @@ public class KPL extends JFrame {
         panelBotones.add(ejecutarBtn);
 
         add(panelBotones, BorderLayout.SOUTH);
-    }
+        
+        //Colores y diseño de los botones
+        // Cambiar fuente y colores en los botones:
+        Font fuenteNiños = new Font("Comic Sans MS", Font.BOLD, 16);
+        
+        moverBtn.setFont(fuenteNiños);
+        moverBtn.setBackground(new Color(135, 206, 250)); // Azul cielo claro
+        moverBtn.setForeground(Color.WHITE);
+        moverBtn.setFocusPainted(false);
+        //moverBtn.setIcon(new ImageIcon("icons/move.jpg")); // icono representativo
+        
+        decirBtn.setFont(fuenteNiños);
+        decirBtn.setBackground(new Color(255, 182, 193)); // Rosa claro
+        decirBtn.setForeground(Color.WHITE);
+        //decirBtn.setIcon(new ImageIcon("iconos/speak.png"));
 
+        repetirBtn.setFont(fuenteNiños);
+        repetirBtn.setBackground(new Color(144, 238, 144)); // Verde claro
+        repetirBtn.setForeground(Color.WHITE);
+        //repetirBtn.setIcon(new ImageIcon("iconos/repeat.png"));
+
+        ejecutarBtn.setFont(fuenteNiños);
+        ejecutarBtn.setBackground(new Color(255, 165, 0)); // Naranja
+        ejecutarBtn.setForeground(Color.WHITE);
+        //ejecutarBtn.setIcon(new ImageIcon("iconos/run.png"));
+
+    }
+    //Evento de Ejecutar código
     private void ejecutarCodigo() {
         salidaArea.setText("");
         String codigo = area.getText();
@@ -63,7 +103,7 @@ public class KPL extends JFrame {
         new Thread(() -> {
             try {
                 Reader reader = new StringReader(codigo);
-                Lexer lexer = new Lexer(reader);
+                LexerSimple lexer = new LexerSimple(reader);
                 parser p = new parser(lexer);
                 Symbol resultado = p.parse();
 

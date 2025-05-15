@@ -267,7 +267,13 @@ class CUP$parser$actions {
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-            RESULT = s;
+            RESULT = new Runnable() {
+               public void run() {
+                  for (Object sentencia : (java.util.List<Object>) s) {
+                     ((Runnable) sentencia).run();
+                  }
+               }
+            };
          
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bloque",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
