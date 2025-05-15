@@ -5,9 +5,8 @@
         <group>
             <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/analizador/LexerSimple.flex</file>
             <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/analizador/parser.java</file>
-            <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/kpl/Token.java</file>
-            <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/analizador/LexerSimple.java</file>
-            <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/kpl/KPL.java</file>
+            <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/analizador/sym.java</file>
+            <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/KPL.java</file>
             <file>file:/C:/Users/Oscar/OneDrive%20-%20Centro%20de%20Enseñanza%20Técnica%20Industrial/Documentos/ENGINEERING/6TH%20SEMESTER/THEORY%20OF%20AUTOMATA/KPL/src/analizador/parserSimple.cup</file>
         </group>
     </open-files>
