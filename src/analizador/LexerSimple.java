@@ -4,6 +4,8 @@
 
 package analizador;
 
+import java_cup.runtime.Symbol;
+
 
 @SuppressWarnings("fallthrough")
 class LexerSimple implements java_cup.runtime.Scanner {
@@ -284,8 +286,8 @@ class LexerSimple implements java_cup.runtime.Scanner {
 
   /* user code: */
     // Importaciones necesarias
-    import java_cup.runtime.Symbol;
-    import java_cup.runtime.SymbolFactory;
+    //import java_cup.runtime.Symbol;
+    //import java_cup.runtime.SymbolFactory;
 
 
   /**

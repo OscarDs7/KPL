@@ -1,10 +1,7 @@
 package analizador;
 
-symbol factory java_cup.runtime.ComplexSymbolFactory;
-
 parser code {:
-    import java_cup.runtime.ComplexSymbolFactory;
-    import java_cup.runtime.Symbol;
+  // Código opcional
 :};
 
 terminal MOVER, DECIR, REPETIR, LLAVE_ABRE, LLAVE_CIERRA;
@@ -15,63 +12,65 @@ non terminal Object programa, sentencias, sentencia, bloque;
 
 start with programa;
 
-programa ::= sentencias
-           {: RESULT = $1; :}
+programa ::= sentencias:s
+           {: 
+              RESULT = new Runnable() {
+                 public void run() {
+                    for (Object sentencia : (java.util.List<Object>) s) {
+                       ((Runnable) sentencia).run();
+                    }
+                 }
+              };
+           :}
            ;
 
-sentencias ::= sentencia sentencias
+sentencias ::= sentencia:s sentencias:ss
              {: 
-                Runnable s1 = (Runnable) $1;
-                Runnable s2 = (Runnable) $2;
-                RESULT = new Runnable() {
-                   public void run() {
-                      s1.run();
-                      s2.run();
-                   }
-                };
+                java.util.List<Object> lista = new java.util.ArrayList<>();
+                lista.add(s);
+                lista.addAll((java.util.List<Object>) ss);
+                RESULT = lista;
              :}
-           | /* vacío */ 
+           | /* vacío */
              {: 
-                RESULT = new Runnable() {
-                   public void run() { }
-                };
+                RESULT = new java.util.ArrayList<Object>();
              :}
            ;
 
-sentencia ::= MOVER NUM 
+sentencia ::= MOVER NUM:n
                {: 
-                  int pasos = ((Integer)$2.value);
+                  int pasos = n;
                   RESULT = new Runnable() { 
                      public void run() {
                          System.out.println("Mover " + pasos + " pasos");
                      }
                   };
                :}
-           | DECIR CADENA 
+           | DECIR CADENA:c
                {: 
-                  String texto = (String)$2.value;
+                  String texto = c;
                   RESULT = new Runnable() { 
                      public void run() {
                          System.out.println("Decir: " + texto);
                      }
                   };
                :}
-           | REPETIR NUM bloque 
+           | REPETIR NUM:n bloque:b
                {: 
-                  int rep = ((Integer)$2.value);
-                  Runnable bloque = (Runnable)$3;
+                  int rep = n;
+                  Runnable bloqueRun = b;
                   RESULT = new Runnable() {
                      public void run() {
                         for (int i = 0; i < rep; i++) {
-                           bloque.run();
+                           bloqueRun.run();
                         }
                      }
                   };
                :}
            ;
 
-bloque ::= LLAVE_ABRE sentencias LLAVE_CIERRA
+bloque ::= LLAVE_ABRE sentencias:s LLAVE_CIERRA
          {: 
-            RESULT = $2;
+            RESULT = s;
          :}
          ;

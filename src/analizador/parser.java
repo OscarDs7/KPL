@@ -5,7 +5,6 @@
 
 package analizador;
 
-import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -104,6 +103,10 @@ public class parser extends java_cup.runtime.lr_parser {
   public int error_sym() {return 1;}
 
 
+
+  // Código opcional
+
+
 /** Cup generated class to encapsulate user supplied action code.*/
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 class CUP$parser$actions {
@@ -146,7 +149,18 @@ class CUP$parser$actions {
           case 1: // programa ::= sentencias 
             {
               Object RESULT =null;
-
+		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 
+              RESULT = new Runnable() {
+                 public void run() {
+                    for (Object sentencia : (java.util.List<Object>) s) {
+                       ((Runnable) sentencia).run();
+                    }
+                 }
+              };
+           
               CUP$parser$result = parser.getSymbolFactory().newSymbol("programa",0, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -155,13 +169,17 @@ class CUP$parser$actions {
           case 2: // sentencias ::= sentencia sentencias 
             {
               Object RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		int ssleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ssright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ss = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 
-                RESULT = new Runnable() {
-                   public void run() {
-                      ((Runnable)$1).run();
-                      ((Runnable)$2).run();
-                   }
-                };
+                java.util.List<Object> lista = new java.util.ArrayList<>();
+                lista.add(s);
+                lista.addAll((java.util.List<Object>) ss);
+                RESULT = lista;
              
               CUP$parser$result = parser.getSymbolFactory().newSymbol("sentencias",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -172,9 +190,7 @@ class CUP$parser$actions {
             {
               Object RESULT =null;
 		 
-                RESULT = new Runnable() {
-                   public void run() { }
-                };
+                RESULT = new java.util.ArrayList<Object>();
              
               CUP$parser$result = parser.getSymbolFactory().newSymbol("sentencias",1, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -184,10 +200,14 @@ class CUP$parser$actions {
           case 4: // sentencia ::= MOVER NUM 
             {
               Object RESULT =null;
+		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Integer n = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 
+                  int pasos = n;
                   RESULT = new Runnable() { 
                      public void run() {
-                         System.out.println("Mover " + $2 + " pasos");
+                         System.out.println("Mover " + pasos + " pasos");
                      }
                   };
                
@@ -199,10 +219,14 @@ class CUP$parser$actions {
           case 5: // sentencia ::= DECIR CADENA 
             {
               Object RESULT =null;
+		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		String c = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 
+                  String texto = c;
                   RESULT = new Runnable() { 
                      public void run() {
-                         System.out.println("Decir: " + $2);
+                         System.out.println("Decir: " + texto);
                      }
                   };
                
@@ -214,11 +238,19 @@ class CUP$parser$actions {
           case 6: // sentencia ::= REPETIR NUM bloque 
             {
               Object RESULT =null;
+		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Integer n = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 
+                  int rep = n;
+                  Runnable bloqueRun = (Runnable) b;
                   RESULT = new Runnable() {
                      public void run() {
-                        for (int i = 0; i < $2; i++) {
-                           ((Runnable)$3).run();
+                        for (int i = 0; i < rep; i++) {
+                           bloqueRun.run();
                         }
                      }
                   };
@@ -231,8 +263,11 @@ class CUP$parser$actions {
           case 7: // bloque ::= LLAVE_ABRE sentencias LLAVE_CIERRA 
             {
               Object RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-            RESULT = $2;
+            RESULT = s;
          
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bloque",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

@@ -1,10 +1,10 @@
 import analizador.parser;
+//import analizador.Lexer;
 import java.awt.*;
 import java.io.*;
 import java_cup.Lexer;
 import java_cup.runtime.Symbol;
 import javax.swing.*;
-import java_cup.runtime.ComplexSymbolFactory;
 
 public class KPL extends JFrame {
 
@@ -27,12 +27,11 @@ public class KPL extends JFrame {
         salidaArea.setBackground(new Color(230, 255, 230));
         salidaArea.setEditable(false);
 
-        // Panel dividido: entrada y salida
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(area), new JScrollPane(salidaArea));
         splitPane.setResizeWeight(0.6);
         add(splitPane, BorderLayout.CENTER);
 
-        // Redirigir System.out a salidaArea
+        // Redirigir salida
         PrintStream printStream = new PrintStream(new TextAreaOutputStream(salidaArea));
         System.setOut(printStream);
         System.setErr(printStream);
@@ -58,16 +57,19 @@ public class KPL extends JFrame {
     }
 
     private void ejecutarCodigo() {
-        salidaArea.setText(""); // Limpiar salida anterior
-        String codigo = area.getText(); // Obtener el código desde JTextArea
+        salidaArea.setText("");
+        String codigo = area.getText();
 
         new Thread(() -> {
             try {
                 Reader reader = new StringReader(codigo);
-                ComplexSymbolFactory sf = new ComplexSymbolFactory(); // Crear el Factory
-                Lexer lexer = new Lexer(reader, sf); // Pasar el factory al lexer
-                parser p = new parser(lexer, sf);
-                p.parse(); // Llamada al método parse() para iniciar el análisis
+                Lexer lexer = new Lexer(reader);
+                parser p = new parser(lexer);
+                Symbol resultado = p.parse();
+
+                if (resultado.value instanceof Runnable runnable) {
+                    runnable.run();
+                }
 
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
@@ -81,7 +83,7 @@ public class KPL extends JFrame {
         SwingUtilities.invokeLater(() -> new KPL().setVisible(true));
     }
 
-    // Clase auxiliar para redirigir System.out a un JTextArea
+    // Clase auxiliar
     static class TextAreaOutputStream extends OutputStream {
         private final JTextArea textArea;
 
