@@ -40,7 +40,7 @@ El objetivo principal es **poner en práctica el análisis léxico y sintáctico
    - JFlex: genera el analizador léxico.
    - CUP: genera el analizador sintáctico.
 4. Compila el proyecto.
-5. Ejecuta la clase principal (ej. `Main.java`).
+5. Ejecuta la clase principal (ej. `KPL.java`).
 
 ---
 
