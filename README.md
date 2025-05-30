@@ -53,7 +53,7 @@ El objetivo principal es **poner en práctica el análisis léxico y sintáctico
 
 ## Desarrolladores
 
-- Ing.Oscar Romero / Ing.Bryan Soto 
+- Ing.Oscar Romero
 - Proyecto académico para CETI (Centro de Enseñanza Técnica Industrial)
 
 ---
