@@ -1,0 +1,181 @@
+package analizador;
+
+parser code {:
+    import java.util.HashMap;
+    import java.util.Map;
+    public static Map<String, Integer> memoria = new HashMap<>();
+:};
+
+terminal MOVER, DECIR, REPETIR, LLAVE_ABRE, LLAVE_CIERRA;
+terminal SUMA, RESTA, MULT, DIV;
+terminal VAR, IF, ELSE, ASIGNAR, IGUAL, DIFERENTE, MENOR, MAYOR;
+terminal PAREN_ABRE, PAREN_CIERRA;
+terminal Integer NUM;
+terminal String CADENA;
+
+non terminal Object programa, sentencias, sentencia, bloque;
+non terminal Object asignacion, expresion, termino, factor, expresion_booleana;
+
+start with programa;
+
+
+programa ::= sentencias:s
+           {:
+              RESULT = new Runnable() {
+                 public void run() {
+                    for (Object sentencia : (java.util.List<Object>) s) {
+                       ((Runnable) sentencia).run();
+                    }
+                 }
+              };
+           :}
+           ;
+
+sentencias ::= sentencia:s sentencias:ss
+             {:
+                java.util.List<Object> lista = new java.util.ArrayList<>();
+                lista.add(s);
+                lista.addAll((java.util.List<Object>) ss);
+                RESULT = lista;
+             :}
+           | /* vacío */
+             {:
+                RESULT = new java.util.ArrayList<Object>();
+             :}
+           ;
+
+sentencia ::= MOVER expresion:n
+               {:
+                  RESULT = new Runnable() {
+                     public void run() {
+                         System.out.println("Mover " + n + " pasos");
+                     }
+                  };
+               :}
+           | DECIR CADENA:c
+               {:
+                  String texto = c;
+                  RESULT = new Runnable() {
+                     public void run() {
+                         System.out.println("Decir: " + texto);
+                     }
+                  };
+               :}
+           | REPETIR expresion:n bloque:b
+               {:
+                  int rep = (Integer) n;
+                  Runnable bloqueRun = (Runnable) b;
+                  RESULT = new Runnable() {
+                     public void run() {
+                        for (int i = 0; i < rep; i++) {
+                           bloqueRun.run();
+                        }
+                     }
+                  };
+               :}
+           | asignacion:a
+               {:
+                  RESULT = a;
+               :}
+           | IF PAREN_ABRE expresion_booleana:cond PAREN_CIERRA bloque:b1 ELSE bloque:b2
+               {:
+                  RESULT = new Runnable() {
+                    public void run() {
+                       if ((Boolean) cond) {
+                           ((Runnable) b1).run();
+                       } else {
+                           ((Runnable) b2).run();
+                       }
+                    }
+                  };
+               :}
+           ;
+
+bloque ::= LLAVE_ABRE sentencias:s LLAVE_CIERRA
+         {:
+            RESULT = new Runnable() {
+               public void run() {
+                  for (Object sentencia : (java.util.List<Object>) s) {
+                     ((Runnable) sentencia).run();
+                  }
+               }
+            };
+         :}
+         ;
+
+asignacion ::= VAR:v ASIGNAR expresion:e
+             {:
+                String var = (String) v;
+                int val = (Integer) e;
+                RESULT = new Runnable() {
+                    public void run() {
+                        memoria.put(var, val);
+                        System.out.println(var + " = " + val);
+                    }
+                };
+             :}
+;
+
+// Reglas para expresion, termino y factor — así se usa toda la jerarquía de operadores
+expresion ::= expresion:e1 SUMA termino:e2
+            {:
+                RESULT = (Integer)e1 + (Integer)e2;
+            :}
+            | expresion:e1 RESTA termino:e2
+            {:
+                RESULT = (Integer)e1 - (Integer)e2;
+            :}
+            | termino:t
+            {:
+                RESULT = t;
+            :}
+            ;
+
+termino ::= termino:t1 MULT factor:f2
+          {:
+            RESULT = (Integer)t1 * (Integer)f2;
+          :}
+          | termino:t1 DIV factor:f2
+          {:
+            RESULT = (Integer)t1 / (Integer)f2;
+          :}
+          | factor:f
+          {:
+            RESULT = f;
+          :}
+          ;
+
+factor ::= PAREN_ABRE expresion:n PAREN_CIERRA
+         {: RESULT = n; :}
+         | VAR:v  
+         {:
+            if (memoria.containsKey(v)) {
+                RESULT = memoria.get(v);
+            } else {
+                throw new RuntimeException("Variable no definida: " + v);
+            }
+         :}
+         | NUM:n  
+         {:  RESULT = n; :}
+         ;
+
+
+
+// Expresiones booleanas para if
+expresion_booleana ::= expresion:e1 IGUAL expresion:e2
+                     {:
+                        RESULT = ((Integer)e1).equals((Integer)e2);
+                     :}
+                     | expresion:e1 DIFERENTE expresion:e2
+                     {:
+                        RESULT = !((Integer)e1).equals((Integer)e2);
+                     :}
+                     | expresion:e1 MAYOR expresion:e2
+                     {:
+                        RESULT = (Integer)e1 > (Integer)e2;
+                     :}
+                     | expresion:e1 MENOR expresion:e2
+                     {:
+                        RESULT = (Integer)e1 < (Integer)e2;
+                     :}
+                     ;
