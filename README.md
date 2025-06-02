@@ -1,4 +1,4 @@
-# kidsprolanguage
+# kidsprogramminglanguage
 Programa hecho con la finalidad de enseñar a los jóvenes fundamentos básicos de la programación.
 
 # 💻 KPL - Lenguaje de programación para niños
